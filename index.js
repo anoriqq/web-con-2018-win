@@ -7,13 +7,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('app:server');
-const http = require('http');
-
-// ルーター読み込み
-const indexRouter = require('./routes/index');
-
-// appの作成
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 // モデルの読み込み
 
@@ -35,12 +31,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ルート設定
-app.use('/', indexRouter);
+app.get('/', (req, res, next)=>{
+  res.render('index', {title: 'ホームページ'});
+});
 
 // 404ハンドラー
 app.use((req, res, next)=>{
   next(createError(404));
-})
+});
 
 // エラーハンドラー
 app.use((err, req, res, next)=>{
@@ -48,15 +46,19 @@ app.use((err, req, res, next)=>{
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
   res.render('error');
-})
-
-// HTTPサーバーを作成
-const server = http.createServer(app);
+});
 
 // ポート待機
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+// socket.ioイベント
+io.on('connection', (socket)=>{
+  socket.on('chat message', (msg)=>{
+    io.emit('chat message', msg);
+  });
+});
 
 /**
  * HTTPサーバーエラーハンドラー
