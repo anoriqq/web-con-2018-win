@@ -5,18 +5,27 @@
   "author": "show0317sw <tunakan_8584@yahoo.co.jp>",
   "license": "MIT",
   "scripts": {
-    "start": "DEBUG=express:*,app:* node index.js"
+    "start": "DEBUG=express:*,app:* node index.js",
+    "build": "webpack"
   },
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "debug": "^4.1.1",
     "express": "^4.16.4",
     "http-errors": "^1.7.1",
+    "jquery": "^3.3.1",
     "morgan": "^1.9.1",
     "pg": "^7.7.1",
     "pg-hstore": "^2.3.2",
     "pug": "^2.0.3",
     "sequelize": "^4.42.0",
     "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "babel-loader": "^8.0.5",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.2.1"
   }
 }
