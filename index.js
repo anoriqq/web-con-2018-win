@@ -10,6 +10,8 @@ const debug = require('debug')('app:server');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const kuromojin = require('kuromojin');
+const analyze = require('negaposi-analyzer-ja');
 
 // モデルの読み込み
 
@@ -56,9 +58,27 @@ server.on('listening', onListening);
 // socket.ioイベント
 io.on('connection', (socket)=>{
   socket.on('chat message', (msg)=>{
-    io.emit('chat message', msg);
+    kuromojin(msg)
+      .then(tokens=>{
+        const score = analyze(tokens);
+        const color = getColor(score)
+        debug(msg, score, color);
+        io.emit('chat message', {msg:msg, score:score, color:color});
+      });
   });
 });
+
+function getColor(score){
+  let r = Math.round( Math.random()*255 ),g=Math.round( Math.random()*255 ),b=Math.round( Math.random()*255 );
+  const colorCode = `#${normlizeColor(r.toString(16))}${normlizeColor(g.toString(16))}${normlizeColor(b.toString(16))}`;
+  return colorCode;
+  function normlizeColor(val){
+    if(val.toString().length === 1){
+      return '0' + val.toString();
+    }
+    return val;
+  }
+}
 
 /**
  * HTTPサーバーエラーハンドラー
