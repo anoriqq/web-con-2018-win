@@ -1,5 +1,24 @@
-extends layout/head
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html
+  head
+    title= title
+  body
+    form(action="/")
+      input(id="m" autocomplete="off")
+      button 送信
+    ul(id="messages")
+    script(src="/socket.io/socket.io.js")
+    script(src="https://code.jquery.com/jquery-1.11.1.js")
+    script.
+      $(function(){
+        var socket = io();
+        $('form').submit(function(e){
+          e.preventDefault();
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg){
+          $('#messages').append($('<li>').text(msg));
+        });
+      });
