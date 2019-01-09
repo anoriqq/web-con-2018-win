@@ -6,7 +6,7 @@ const createError = require('http-errors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const debug = require('debug')('app:server');
+const debug = require('debug')('app');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -15,8 +15,8 @@ const analyze = require('negaposi-analyzer-ja');
 const helmet = require('helmet');
 
 // モデルの読み込み
-
-// モデルのリレーション設定
+const Messages = require('./models/messages');
+Messages.sync();
 
 // ポートの設定
 const port = process.env.PORT || '8000';
@@ -65,6 +65,11 @@ io.on('connection', (socket)=>{
         const score = analyze(tokens);
         const color = getColor(score)
         debug(msg, score, color);
+        Messages.create({
+          content: msg,
+          score: score,
+          color: color
+        });
         io.emit('chat message', {msg:msg, score:score, color:color});
       });
   });
