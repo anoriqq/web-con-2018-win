@@ -5,12 +5,13 @@
   "author": "show0317sw <tunakan_8584@yahoo.co.jp>",
   "license": "MIT",
   "scripts": {
-    "start": "DEBUG=express:*,app:* node index.js",
+    "start": "DEBUG=express:*,app,sequelize node index.js",
     "build": "webpack"
   },
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "debug": "^4.1.1",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "helmet": "^3.15.0",
     "http-errors": "^1.7.1",
