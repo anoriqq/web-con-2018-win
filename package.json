@@ -20,7 +20,7 @@
     "kuromojin": "^1.4.0",
     "morgan": "^1.9.1",
     "negaposi-analyzer-ja": "^1.0.1",
-    "pg": "^7.7.1",
+    "pg": "^8.0.0",
     "pg-hstore": "^2.3.2",
     "pug": "^2.0.3",
     "sequelize": "^4.42.0",
