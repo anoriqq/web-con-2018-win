@@ -17,7 +17,7 @@
     "http-errors": "^1.7.1",
     "jquery": "^3.3.1",
     "kuromoji": "^0.1.2",
-    "kuromojin": "^1.4.0",
+    "kuromojin": "^2.0.0",
     "morgan": "^1.9.1",
     "negaposi-analyzer-ja": "^1.0.1",
     "pg": "^7.7.1",
